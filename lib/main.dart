@@ -8,7 +8,7 @@ void main() {
 }
 
 final theme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.red[900]!), //brightness: Brightness.dark,
+    colorScheme: ColorScheme.fromSeed(brightness: Brightness.dark, seedColor: Colors.red[900]!), //
     useMaterial3: true,
     textTheme: GoogleFonts.ubuntuTextTheme()
 );

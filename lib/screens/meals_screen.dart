@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../data/random_data.dart';
 import '../models/meal.dart';
 import '../widgets/meal_item.dart';
+import 'meal_details_screen.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({Key? key, required this.categoryTitle, required this.meals}) : super(key: key);
@@ -9,10 +11,23 @@ class MealsScreen extends StatelessWidget {
   final String categoryTitle;
   final List<Meal> meals;
 
+  void _selectMeal(BuildContext context, Meal chosenMeal) {
+    final mealDetail = availableMeals.where((meal) => meal.title == chosenMeal.title).first;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (ctx) => MealDetailsScreen(meal: mealDetail)
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(itemBuilder: (ctx, index){
-      return MealItem(meal: meals[index]);
+      return MealItem(meal: meals[index], selectedMeal: (){
+        _selectMeal(context, meals[index]);
+      }
+      );
     },
       itemCount: meals.length,);
 
@@ -35,7 +50,7 @@ class MealsScreen extends StatelessWidget {
             Text(
               "uh oh...No meals here yet!.",
               style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
             const SizedBox(
