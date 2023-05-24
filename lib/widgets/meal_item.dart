@@ -7,9 +7,9 @@ import '../models/meal.dart';
 import '../screens/meal_details_screen.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({Key? key, required this.meal, required this.selectedMeal}) : super(key: key);
+  const MealItem({Key? key, required this.meal, required this.onSelectMeal}) : super(key: key);
   final Meal meal;
-  final void Function() selectedMeal;
+  final void Function() onSelectMeal;
 
   String get complexityText{
     return meal.complexity.name[0].toUpperCase() + meal.complexity.name.substring(1);
@@ -17,7 +17,6 @@ class MealItem extends StatelessWidget {
   String get affordabilityText{
     return meal.affordability.name[0].toUpperCase() + meal.affordability.name.substring(1);
   }
-
 
 
   @override
@@ -28,7 +27,7 @@ class MealItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 5,
       child: InkWell(
-        onTap: selectedMeal,
+        onTap: onSelectMeal,
         child: Stack(
           children: [
             FadeInImage(

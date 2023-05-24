@@ -28,6 +28,7 @@ class CategoryGridItem extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
+        alignment: Alignment.center,
         child: Text(
           category.title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(

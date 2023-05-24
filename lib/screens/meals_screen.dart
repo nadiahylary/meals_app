@@ -11,7 +11,7 @@ class MealsScreen extends StatelessWidget {
   final String categoryTitle;
   final List<Meal> meals;
 
-  void _selectMeal(BuildContext context, Meal chosenMeal) {
+  void _selectedMeal(BuildContext context, Meal chosenMeal) {
     final mealDetail = availableMeals.where((meal) => meal.title == chosenMeal.title).first;
     Navigator.push(
         context,
@@ -24,8 +24,8 @@ class MealsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(itemBuilder: (ctx, index){
-      return MealItem(meal: meals[index], selectedMeal: (){
-        _selectMeal(context, meals[index]);
+      return MealItem(meal: meals[index], onSelectMeal: (){
+        _selectedMeal(context, meals[index]);
       }
       );
     },
