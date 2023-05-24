@@ -58,6 +58,7 @@ final availableCategories = [
   ),
 ];
 
+
 final availableMeals = [
   const Meal(
     id: 'm1',

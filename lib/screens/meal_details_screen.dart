@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/data/random_data.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../models/meal.dart';
 import '../widgets/meal_item_attributes.dart';
 
 class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({Key? key, required this.meal}) : super(key: key);
+  const MealDetailsScreen({Key? key, required this.meal, required this.addOrRemoveFavorite}) : super(key: key);
 
   final Meal meal;
+  final void Function(Meal meal) addOrRemoveFavorite;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -19,6 +21,7 @@ class MealDetailsScreen extends StatelessWidget {
         meal.affordability.name.substring(1);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +31,16 @@ class MealDetailsScreen extends StatelessWidget {
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
+          actions: [
+            IconButton(
+                onPressed: (){
+                  addOrRemoveFavorite(meal);
+                  },
+                icon: const Icon(
+                  Icons.star_border,
+                )
+              )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -57,7 +70,7 @@ class MealDetailsScreen extends StatelessWidget {
                 width: double.infinity,
                 //padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 //padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
-                child: Expanded(
+
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
@@ -96,12 +109,9 @@ class MealDetailsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-
-
                     ],
                   ),
                 ),
-              ),
               const SizedBox(
                 height: 15,
               ),

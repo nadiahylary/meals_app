@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals_app/screens/categories_screen.dart';
+import 'package:meals_app/screens/tabs_screen.dart';
 
 
 void main() {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Mi Comida',
       theme: darkTheme,
-      home: const CategoriesScreen(),
+      home: const TabsScreen(),
     );
   }
 }

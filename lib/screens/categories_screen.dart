@@ -3,11 +3,13 @@ import 'package:meals_app/data/random_data.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 import '../models/category.dart';
+import '../models/meal.dart';
 import 'meals_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({Key? key}) : super(key: key);
-  
+  const CategoriesScreen({Key? key, required this.addOrRemoveFavorite}) : super(key: key);
+  final void Function(Meal meal) addOrRemoveFavorite;
+
   void _selectCategory(BuildContext context, Category category) {
     final mealsByCategory = availableMeals.where((meal) => meal.categories.contains(category.id)).toList();
     //OR: Navigator.of(context).push(route);
@@ -15,19 +17,22 @@ class CategoriesScreen extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (ctx) => MealsScreen(
-                categoryTitle: category.title, meals: mealsByCategory)
+                title: category.title, meals: mealsByCategory, addOrRemoveFavorite: addOrRemoveFavorite,)
         )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
       //backgroundColor: Colors.red[300], //todo note: I found how to customize color shades without using the fromARGB parameter,
+      /*Scaffold(
       appBar: AppBar(
+
         title: const Text("Browse by Category"),
       ),
-      body: GridView(
+      body: */
+      GridView(
         padding: const EdgeInsets.all(20),
         //todo note: GridView is like a Column widget with multiple rows. So, its crossAxis is the same as a Column widget's crossAxis
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -50,7 +55,6 @@ class CategoriesScreen extends StatelessWidget {
             return CategoryGridItem(category: element);
           }).toList(),*/
         ],
-      ),
-    );
+      );
   }
 }
