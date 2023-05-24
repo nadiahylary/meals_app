@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/data/category_data.dart';
+import 'package:meals_app/data/random_data.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
+
+import '../models/category.dart';
+import 'meals_screen.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
+  
+  void _selectCategory(BuildContext context, Category category) {
+    final mealsByCategory = availableMeals.where((meal) => meal.categories.contains(category.id)).toList();
+    //OR: Navigator.of(context).push(route);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (ctx) => MealsScreen(
+                categoryTitle: category.title, meals: mealsByCategory)
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +34,19 @@ class CategoriesScreen extends StatelessWidget {
           //todo note: number of grids on the horizontal axis, ie crossAxis
           crossAxisCount: 2,
           //todo note: size of a tile in terms of width/height ratio. Eg a childAspectRatio = 1 will give us square tiles(width = height)
-          childAspectRatio: 3/3,
+          childAspectRatio: 3 / 3,
           crossAxisSpacing: 15,
           mainAxisSpacing: 15,
         ),
         children: [
-          for(final category in availableCategories)
-            CategoryGridItem(category: category),
+          for (final category in availableCategories)
+            CategoryGridItem(
+                category: category,
+                onSelectCategory: () {
+                  _selectCategory(context, category);
+                }),
           //todo other method:
-           /*...availableCategories.map((element) {
+          /*...availableCategories.map((element) {
             return CategoryGridItem(category: element);
           }).toList(),*/
         ],

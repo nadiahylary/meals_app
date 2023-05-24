@@ -13,6 +13,7 @@ final theme = ThemeData(
     textTheme: GoogleFonts.ubuntuTextTheme()
 );
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Mi Comida',
       theme: theme,
-      home: const CategoriesScreen(),//todo
+      home: const CategoriesScreen(),
     );
   }
 }
