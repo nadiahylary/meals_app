@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/data/random_data.dart';
 
+import '../data/random_data.dart';
 import '../models/meal.dart';
 import 'categories_screen.dart';
 import 'meals_screen.dart';
@@ -14,8 +14,6 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
 
-  final List<Meal> favoriteMeals = [];
-
   int _selectedTabIndex = 0;
 
   void _selectTab(int index){
@@ -23,17 +21,27 @@ class _TabsScreenState extends State<TabsScreen> {
       _selectedTabIndex = index;
     });
   }
+  void _showInfoMsg(String msg){
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
 
 
   void _addOrRemoveFavorite(Meal meal){
     bool isFavorite = favoriteMeals.contains(meal);
-    setState(() {
-      if(isFavorite){
+    if(isFavorite){
+      setState(() {
         favoriteMeals.remove(meal);
-      }
-      favoriteMeals.add(meal);
+      });
+      _showInfoMsg("Meal Removed from Favorites");
+    }
+    else{
+      setState(() {
+        favoriteMeals.add(meal);
+        _showInfoMsg("Meal Added from Favorites");
+      });
+    }
 
-    });
 
   }
 
