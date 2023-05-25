@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/data/random_data.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../models/meal.dart';
 import '../widgets/meal_item_attributes.dart';
 
-class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({Key? key, required this.meal, required this.addOrRemoveFavorite}) : super(key: key);
+class MealDetailsScreen extends ConsumerWidget {
+  const MealDetailsScreen({Key? key, required this.meal}) : super(key: key);
 
   final Meal meal;
-  final void Function(Meal meal) addOrRemoveFavorite;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -22,7 +23,10 @@ class MealDetailsScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final isFavorite = favoriteMeals.contains(meal);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title,
@@ -33,10 +37,18 @@ class MealDetailsScreen extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: (){
-                  addOrRemoveFavorite(meal);
+                  final favoriteToggle = ref.read(favoriteMealsProvider.notifier)
+                      .toggleMealFavoriteStatus(meal);
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(favoriteToggle ? "Meal Added to Favorites"
+                              : "Meal Removed from Favorites")
+                      )
+                  );
                 },
-                icon: const Icon(
-                  Icons.star_border,
+                icon: Icon(isFavorite ?
+                  Icons.star: Icons.star_border,
                 )
             )
           ],
@@ -51,24 +63,11 @@ class MealDetailsScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 300,
               ),
-              /*Container(
-                color: Colors.black54,
-                height: 38,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                width: double.infinity,
-                child: Text(meal.title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  fontSize: 20,
-                ),)
-            ),*/
+
               Container(
                 color: Colors.black54,
                 height: 60,
                 width: double.infinity,
-                //padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                //padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
