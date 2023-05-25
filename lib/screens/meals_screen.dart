@@ -38,14 +38,6 @@ class MealsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Container(
-              height: 200,
-              margin: const EdgeInsets.only(top: 30),
-              child: Image.asset(
-                "assets/images/empty_plate.jfif",
-                fit: BoxFit.cover,
-              ),
-            ),
             const SizedBox(
               height: 20,
             ),

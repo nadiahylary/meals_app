@@ -58,7 +58,7 @@ final availableCategories = [
   ),
 ];
 
-final List<Meal> favoriteMeals = [];
+
 
 final availableMeals = [
   const Meal(

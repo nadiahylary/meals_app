@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/data/random_data.dart';
+import 'package:meals_app/screens/filters.dart';
 
-import '../data/random_data.dart';
 import '../models/meal.dart';
+import '../widgets/main_drawer.dart';
 import 'categories_screen.dart';
 import 'meals_screen.dart';
+
+const kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.vegetarian: false,
+  Filter.lactoseFree: false,
+  Filter.vegan: false
+};
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -13,8 +22,9 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-
+  final List<Meal> _favoriteMeals = [];
   int _selectedTabIndex = 0;
+  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   void _selectTab(int index){
     setState(() {
@@ -28,38 +38,70 @@ class _TabsScreenState extends State<TabsScreen> {
 
 
   void _addOrRemoveFavorite(Meal meal){
-    bool isFavorite = favoriteMeals.contains(meal);
+    bool isFavorite = _favoriteMeals.contains(meal);
     if(isFavorite){
       setState(() {
-        favoriteMeals.remove(meal);
+        _favoriteMeals.remove(meal);
       });
       _showInfoMsg("Meal Removed from Favorites");
     }
     else{
       setState(() {
-        favoriteMeals.add(meal);
+        _favoriteMeals.add(meal);
         _showInfoMsg("Meal Added from Favorites");
       });
     }
+  }
 
+  void _setScreen(String identifier) async {
+    Navigator.of(context).pop();
+    if(identifier == "filters"){
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+          MaterialPageRoute(
+              builder: (ctx) => FiltersScreen(currentFilters: _selectedFilters,))
+      );
+      setState(() {
+        _selectedFilters = result ?? kInitialFilters;
+      });
 
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final filteredMeals = availableMeals.where((meal){
+      if(_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree){
+        return false;
+      }
+      if(_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian){
+        return false;
+      }
+      if(_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
+        return false;
+      }
+      if(_selectedFilters[Filter.vegan]! && !meal.isVegan){
+        return false;
+      }
+      return true;
+    }).toList();
 
-    Widget activeTab = CategoriesScreen(addOrRemoveFavorite: _addOrRemoveFavorite,);
+    Widget activeTab = CategoriesScreen(
+      addOrRemoveFavorite: _addOrRemoveFavorite,
+      filteredMeals: filteredMeals,
+    );
     var activeTabTitle = "Categories";
 
     if(_selectedTabIndex == 1){
-      activeTab = MealsScreen(meals: favoriteMeals, addOrRemoveFavorite: _addOrRemoveFavorite,);
+      activeTab = MealsScreen(meals: _favoriteMeals, addOrRemoveFavorite: _addOrRemoveFavorite,);
       activeTabTitle = "Favorite Recipes";
     }
+
 
     return Scaffold(
       appBar: AppBar(
         title: Text(activeTabTitle),
       ),
+      drawer: MainDrawer(onTapDrawerMenu: _setScreen,),
       body: activeTab,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectTab,

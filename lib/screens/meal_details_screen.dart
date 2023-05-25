@@ -20,9 +20,7 @@ class MealDetailsScreen extends StatelessWidget {
     return meal.affordability.name[0].toUpperCase() +
         meal.affordability.name.substring(1);
   }
-  bool _isFavorite(Meal meal){
-    return favoriteMeals.contains(meal);
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,24 +31,14 @@ class MealDetailsScreen extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
-            if(_isFavorite(meal))
             IconButton(
                 onPressed: (){
                   addOrRemoveFavorite(meal);
-                  },
+                },
                 icon: const Icon(
-                  Icons.star,
+                  Icons.star_border,
                 )
-              )
-            else
-              IconButton(
-                  onPressed: (){
-                    addOrRemoveFavorite(meal);
-                  },
-                  icon: const Icon(
-                    Icons.star_border,
-                  )
-              )
+            )
           ],
         ),
         body: SingleChildScrollView(
