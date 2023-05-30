@@ -67,13 +67,16 @@ class MealDetailsScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            /*Image.network(
-              meal.imageUrl,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 300,
-            ),*/
             Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 300,
+              ),
+            ),
+           /* Hero(
               tag: meal.id,
               child: FadeInImage(
                 placeholder: MemoryImage(kTransparentImage),
@@ -82,7 +85,7 @@ class MealDetailsScreen extends ConsumerWidget {
                 width: double.infinity,
                 height: 300,
               ),
-            ),
+            ),*/
             Container(
               color: Colors.black54,
               height: 60,
